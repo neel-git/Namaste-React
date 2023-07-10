@@ -1,3 +1,4 @@
+import { COMPANY_URL } from "../utils/constants";
 
 const RestaurantCard = (props) => {
   const { resData } = props;
@@ -14,9 +15,7 @@ const RestaurantCard = (props) => {
       <img
         className="res-logo"
         alt="res-logo"
-        src={
-          "https://res.cloudinary.com/swiggy/image/upload/" + cloudinaryImageId
-        }
+        src={COMPANY_URL + cloudinaryImageId}
       />
       <h3>{name}</h3>
       <h4>{cuisines.join(", ")}</h4>
