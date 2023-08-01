@@ -13,14 +13,21 @@ const Body = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
+  // jsonData?.data?.cards[2]?.data?.data?.cards
   const fetchData = async () => {
     const data = await fetch(
       "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING"
     );
     const jsonData = await data.json();
-    setListOfRestaurants(jsonData?.data?.cards[2]?.data?.data?.cards);
-    setFilteredRestaurants(jsonData?.data?.cards[2]?.data?.data?.cards);
+    console.log(jsonData);
+    setListOfRestaurants(
+      jsonData?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants
+    );
+    setFilteredRestaurants(
+      jsonData?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants
+    );
   };
   const onlineStatus = useOnlineStatus();
   if (onlineStatus === false) {
@@ -45,7 +52,7 @@ const Body = () => {
             className="px-2 py-1 bg-green-300 m-2 rounded-lg hover:bg-slate-600 hover:text-white"
             onClick={() => {
               const filteredRestaurants = listOfRestaurants.filter((res) =>
-                res.data.name.toLowerCase().includes(searchText.toLowerCase())
+                res.info.name.toLowerCase().includes(searchText.toLowerCase())
               );
               setFilteredRestaurants(filteredRestaurants);
             }}
@@ -58,7 +65,7 @@ const Body = () => {
             className="px-4 py-2 bg-gray-200 m-3 rounded-lg"
             onClick={() => {
               const filteredList = listOfRestaurants.filter(
-                (res) => res.data.avgRating > 4
+                (res) => res.info.avgRating > 4
               );
               setFilteredRestaurants(filteredList);
             }}
@@ -70,8 +77,8 @@ const Body = () => {
       <div className="flex flex-wrap">
         {filteredRestaurants.map((restaurant) => (
           <Link
-            to={"/restaurants/" + restaurant.data.id}
-            key={restaurant.data.id}
+            to={"/restaurants/" + restaurant.info.id}
+            key={restaurant.info.id}
           >
             <RestaurantCard resData={restaurant} />
           </Link>
